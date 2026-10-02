@@ -1,1 +1,0 @@
-# mass-killings-in-south-africa
