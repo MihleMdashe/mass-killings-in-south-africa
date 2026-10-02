@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mass killings in South Africa, 2026 | News24</title>
+<style>
+.tk-timeline, .tk-timeline * { margin:0; padding:0; box-sizing:border-box; }
+
+.tk-timeline {
+  --red:#dd1f26;
+  --text:#1a1a1a;
+  --muted:#6b6b6b;
+  --bg:#ffffff;
+  --border:#e2e2e2;
+  --light:#f5f5f5;
+  font-family:'Proxima Nova','proxima-nova',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+  color:var(--text);
+  background:var(--bg);
+  line-height:1.5;
+  max-width:640px;
+  margin:0 auto;
+  padding:20px 14px;
+  -webkit-font-smoothing:antialiased;
+  -webkit-text-size-adjust:100%;
+  position:relative;
+  overflow-x:hidden;
+}
+
+.tk-progress { position:relative; left:0; right:0; height:3px; background:var(--light); z-index:100; border-radius:0 0 4px 4px; }
+.tk-progress-fill { height:100%; width:0%; background:var(--red); border-radius:0 4px 4px 0; transition:width .15s linear; }
+
+.tk-eyebrow { font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin-bottom:8px; }
+.tk-title { font-size:28px; font-weight:700; line-height:1.2; color:var(--text); margin-bottom:12px; }
+.tk-desc { font-size:14px; color:var(--muted); line-height:1.55; margin-bottom:20px; }
+
+.tk-stats { display:flex; gap:8px; margin-bottom:24px; }
+.tk-stat { flex:1; background:var(--light); border-radius:8px; padding:12px 6px; text-align:center; min-width:0; }
+.tk-stat-num { font-size:28px; font-weight:700; color:var(--red); line-height:1; }
+.tk-stat-label { font-size:10px; color:var(--muted); text-transform:uppercase; letter-spacing:.04em; margin-top:5px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+
+.tk-track { position:relative; padding-left:48px; }
+.tk-track-bg { position:absolute; left:18px; top:0; bottom:0; width:2px; background:var(--border); border-radius:1px; }
+.tk-track-fill { position:absolute; left:18px; top:0; width:2px; height:0; background:var(--red); border-radius:1px; transition:height .15s linear; }
+
+.tk-month { position:relative; margin-bottom:6px; padding-top:18px;
+  -webkit-animation: tkSlide .3s ease forwards; animation: tkSlide .3s ease forwards;
+}
+.tk-month-dot {
+  position:absolute; left:-36px; top:22px; width:14px; height:14px;
+  border-radius:50%; background:var(--red); border:2px solid var(--bg);
+  box-shadow:0 0 0 2px var(--red);
+}
+.tk-month-label {
+  font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em;
+  color:var(--red); margin-bottom:10px;
+  -webkit-animation: tkSlide .3s ease forwards; animation: tkSlide .3s ease forwards;
+}
+.tk-month-stats { font-size:11px; color:var(--muted); margin-left:6px; font-weight:400; text-transform:none; letter-spacing:0; }
+
+/* ALL CARDS VISIBLE BY DEFAULT. No opacity:0 anywhere. */
+/* CSS animation with forwards fill: if animation runs, slides in. If not, stays visible. */
+details.tk-card {
+  position:relative; margin-bottom:10px; border:1px solid var(--border);
+  border-radius:10px; background:var(--bg); overflow:visible;
+  -webkit-animation: tkSlide .3s ease forwards; animation: tkSlide .3s ease forwards;
+}
+details.tk-card[open] { box-shadow:0 2px 10px rgba(0,0,0,.07); }
+.tk-card-dot {
+  position:absolute; left:-35px; top:24px; width:12px; height:12px;
+  border-radius:50%; border:2px solid var(--bg); z-index:2;
+  background:var(--dot-color, hsl(356,75%,70%));
+  box-shadow:0 0 0 2px var(--dot-color, hsl(356,75%,70%));
+}
+
+@keyframes tkSlide {
+  from { -webkit-transform:translateX(-24px); transform:translateX(-24px); }
+  to   { -webkit-transform:translateX(0); transform:translateX(0); }
+}
+
+/* SUMMARY = the clickable header. Remove default marker. */
+.tk-card-header {
+  display:flex; align-items:flex-start; gap:10px; width:100%;
+  cursor:pointer; padding:12px 14px;
+  font-family:inherit; color:inherit; font-size:inherit;
+  list-style:none;
+}
+.tk-card-header::-webkit-details-marker { display:none; }
+.tk-card-header::marker { display:none; content:""; }
+.tk-badge { flex-shrink:0; min-width:34px; height:34px; padding:0 4px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:15px; font-weight:700; }
+.tk-card-info { flex:1; min-width:0; }
+.tk-card-row1 { display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; margin-bottom:2px; }
+.tk-date { font-size:14px; font-weight:600; color:var(--text); }
+.tk-weekday { font-size:12px; color:var(--muted); }
+.tk-toll { font-size:13px; font-weight:700; }
+.tk-location { font-size:13px; font-weight:600; color:var(--text); margin-bottom:1px; word-wrap:break-word; overflow-wrap:break-word; }
+.tk-meta { font-size:12px; color:var(--muted); }
+.tk-chevron { flex-shrink:0; font-size:11px; color:var(--muted); transition:-webkit-transform .3s ease, transform .3s ease; margin-top:4px; }
+details.tk-card[open] .tk-chevron { -webkit-transform:rotate(180deg); transform:rotate(180deg); }
+
+/* BODY = content inside <details>, shows/hides natively */
+.tk-body { overflow:hidden; }
+.tk-body-inner { padding:10px 14px 12px 14px; border-top:1px solid var(--border); }
+.tk-summary { font-size:14px; line-height:1.6; color:var(--text); margin-bottom:10px; word-wrap:break-word; overflow-wrap:break-word; }
+.tk-tags { display:flex; gap:6px; flex-wrap:wrap; }
+.tk-tag { font-size:11px; padding:3px 8px; border-radius:4px; background:var(--light); color:var(--muted); border:1px solid var(--border); }
+
+.tk-footer { margin-top:28px; padding-top:20px; border-top:1px solid var(--border); }
+.tk-definition { font-size:12px; color:var(--muted); line-height:1.6; margin-bottom:14px; }
+.tk-credit { font-size:12px; line-height:1.7; }
+.tk-source { color:var(--muted); }
+.tk-graphic-credit { font-weight:700; color:var(--text); }
+
+@media (min-width:480px) {
+  .tk-timeline { padding:24px 16px; }
+  .tk-title { font-size:36px; }
+  .tk-stat-num { font-size:34px; }
+  .tk-stats { gap:12px; }
+  .tk-stat { padding:14px 12px; }
+  .tk-stat-label { font-size:11px; }
+  .tk-month-stats { font-size:12px; }
+}
+@media (min-width:768px) {
+  .tk-timeline { padding:32px 24px; }
+  .tk-title { font-size:44px; }
+  .tk-stat-num { font-size:38px; }
+}
+</style>
+</head>
+<body>
+<div class="tk-timeline" id="tkTimeline">
+
+  <div class="tk-progress"><div class="tk-progress-fill" id="tkProgressFill"></div></div>
+
+  <div class="tk-eyebrow">Assassination Monitor &middot; South Africa &middot; 2026</div>
+  <h1 class="tk-title">Mass killings in South Africa, 2026</h1>
+  <p class="tk-desc">Incidents recorded from open source data in which three or more people were killed intentionally in a single attack, 1&nbsp;January to 27&nbsp;September 2026. Colour intensity shows the death toll, from lightest (fewest killed) to darkest (most killed).</p>
+
+  <div class="tk-stats">
+    <div class="tk-stat"><div class="tk-stat-num">41</div><div class="tk-stat-label">attacks</div></div>
+    <div class="tk-stat"><div class="tk-stat-num">197</div><div class="tk-stat-label">killed</div></div>
+    <div class="tk-stat"><div class="tk-stat-num">78</div><div class="tk-stat-label">wounded</div></div>
+    <div class="tk-stat"><div class="tk-stat-num">6</div><div class="tk-stat-label">provinces</div></div>
+  </div>
+
+  <div class="tk-track" id="tkTrack">
+    <div class="tk-track-bg"></div>
+    <div class="tk-track-fill" id="tkTrackFill"></div>
+<div class="tk-month" style="animation-delay:0.000s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.000s">January<span class="tk-month-stats">1 attack &middot; 9 killed &middot; 3 wounded</span></div>
+<details class="tk-card" data-killed="9" style="--dot-color:hsl(356, 75%, 50.8%);animation-delay:0.000s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 50.8%);color:#1a1a1a">9</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">17 January 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 50.8%)">9 killed &middot; 3 wounded</span></span>
+      <div class="tk-location">Marikana informal settlement, Philippi East, Cape Town</div>
+      <div class="tk-meta">Western Cape &middot; Extortion</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Three gunmen opened fire in a shebeen shortly after midnight, killing eight men and the owner, Chwayita Klaas. Police suspect extortion; a 19-year-old faces nine murder counts.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Extortion</span>
+      <span class="tk-tag">Collective intimidation</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:0.030s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.030s">February<span class="tk-month-stats">1 attack &middot; 3 killed</span></div>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.030s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">21 February 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Omarombo Street and Freedom Way, Joe Slovo, Milnerton</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunfire at about 22:30 killed two women inside a Toyota Avanza; a 36-year-old man who had once worked in the taxi industry was found dead close by. Motive unknown; no arrests.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:0.060s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.060s">March<span class="tk-month-stats">4 attacks &middot; 12 killed &middot; 6 wounded</span></div>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.060s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">10 March 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">Viscount Street, Rocklands, Mitchells Plain</div>
+      <div class="tk-meta">Western Cape &middot; Gang conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen in balaclavas stormed a house at about 16:50, killing Sadia Madatt, her partner Abubaker Alexander and Ferjaaz Miller; a 15-year-old girl was wounded. Police suspect a gang motive.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Gang conflict</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.090s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">12 March 2026</span><span class="tk-weekday">Thursday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed &middot; 4 wounded</span></span>
+      <div class="tk-location">Soetkop Street, Kalksteenfontein, Bishop Lavis</div>
+      <div class="tk-meta">Western Cape &middot; Gang conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Three armed men got out of a car at about 20:10 and fired randomly at seven men drinking outside a house; three aged 40, 64 and 66 died and four were wounded. Believed gang-related.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Gang conflict</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.120s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">12 March 2026</span><span class="tk-weekday">Thursday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Voorbrug taxi rank, Delft, Cape Town</div>
+      <div class="tk-meta">Western Cape &middot; Taxi conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Occupants of a white Quantum opened fire on three taxi operators seated in a parked taxi at about 06:15. The dead included Codeta and CATA members; police link it to taxi conflict.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Taxi conflict</span>
+      <span class="tk-tag">Collective intimidation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.150s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">28 March 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">Bekkersdal, Westonaria, Gauteng</div>
+      <div class="tk-meta">Gauteng &middot; Illegal mining</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Police found four people with gunshot wounds after a shooting just after 17:00 on a Saturday; three died. Residents link it to illegal-mining conflict.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Illegal mining</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:0.180s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.180s">April<span class="tk-month-stats">3 attacks &middot; 10 killed &middot; 8 wounded</span></div>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.180s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">15 April 2026</span><span class="tk-weekday">Wednesday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Zandkloof Street, Voorbrug, Delft</div>
+      <div class="tk-meta">Western Cape &middot; Gang conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen entered a backyard flat at about 22:15 and shot a boy of 13 and three adults aged 28–41 in the head. Police suspect a gang motive; no arrests.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Gang conflict</span>
+      <span class="tk-tag">Targeted, with bystanders</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.210s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">21 April 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed &middot; 8 wounded</span></span>
+      <div class="tk-location">Laris Street bridge over the N12, Daveyton</div>
+      <div class="tk-meta">Gauteng &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen fired on a minibus taxi from Etwatwa at about 06:15; it left the road and overturned. Driver Sponono Hlatswayo and two passengers died; eight were hurt. Suspected taxi violence.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.240s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">27 April 2026</span><span class="tk-weekday">Monday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">McDonald&#x27;s, Rahima Moosa Street, Johannesburg CBD</div>
+      <div class="tk-meta">Gauteng &middot; Extortion</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Two masked gunmen shot dead three Ethiopian businessmen, aged 30–45, as they ate breakfast on a Monday morning. Police have not confirmed a motive; a business dispute is suspected.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Extortion</span>
+      <span class="tk-tag">Collective intimidation</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:0.270s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.270s">May<span class="tk-month-stats">5 attacks &middot; 19 killed &middot; 2 wounded</span></div>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.270s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">14 May 2026</span><span class="tk-weekday">Thursday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">R26 near Perdehoek farm, 8 km outside Tweeling, Free State</div>
+      <div class="tk-meta">Free State &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Two cars boxed in a Honda Fit at about 17:15 and gunmen opened fire, killing four Lesotho nationals; a fifth occupant was critically wounded. Motive not established.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.300s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">16 May 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">Strandveld Street, Wesbank, Cape Town</div>
+      <div class="tk-meta">Western Cape &middot; Gang conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Three women and a man aged 32–39 were shot dead at a house at about 20:00; a seven-year-old boy was wounded. Police suspect a gang motive; relatives dispute it.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Gang conflict</span>
+      <span class="tk-tag">Targeted, with bystanders</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.330s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">19 May 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Nomuzi Pharmacy, KwaNyuswa, near Hillcrest</div>
+      <div class="tk-meta">KwaZulu-Natal &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Three armed men stormed a week-old pharmacy, killing pharmacist Nomzila Madinane, cashier Melissa Sibanda and a security guard. Nothing was stolen.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.360s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">24 May 2026</span><span class="tk-weekday">Sunday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Khonkxa Street, Makhaza, Khayelitsha</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Relatives heard shots at about 19:30 on a Sunday and found three men in their early twenties dead inside a shack. No motive has been given and nobody has been arrested.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="5" style="--dot-color:hsl(356, 75%, 63.6%);animation-delay:0.390s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 63.6%);color:#1a1a1a">5</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">27 May 2026</span><span class="tk-weekday">Wednesday</span><span class="tk-toll" style="color:hsl(356, 75%, 63.6%)">5 killed</span></span>
+      <div class="tk-location">Mnenga Street, NU10, Motherwell, Gqeberha</div>
+      <div class="tk-meta">Eastern Cape &middot; Other</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Five teenagers aged 17–18 were shot in the head at a house at about 13:30; four died at the scene, one later in hospital. A 28-year-old faces five murder counts.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Other</span>
+      <span class="tk-tag">Targeted, with bystanders</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:0.420s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.420s">June<span class="tk-month-stats">8 attacks &middot; 41 killed &middot; 18 wounded</span></div>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.420s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">2 June 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed &middot; 2 wounded</span></span>
+      <div class="tk-location">Moonwood Drive and Sheffield Road, Nyanga</div>
+      <div class="tk-meta">Western Cape &middot; Taxi conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">At about 08:30 shooters targeted people gathered at an informal rank; four men died and two were left in a critical condition. Police treat it as taxi-related.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Taxi conflict</span>
+      <span class="tk-tag">Collective intimidation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="13" style="--dot-color:hsl(356, 75%, 38.0%);animation-delay:0.450s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 38.0%);color:#ffffff">13</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">9 June 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 38.0%)">13 killed &middot; 14 wounded</span></span>
+      <div class="tk-location">Jumpers informal settlement, Cleveland, Johannesburg</div>
+      <div class="tk-meta">Gauteng &middot; Illegal mining</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">About ten gunmen entered the settlement at around 23:10 and shot at anyone in reach. Police cite illegal-mining rivalry; three men face 13 murder counts.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Illegal mining</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="6" style="--dot-color:hsl(356, 75%, 60.4%);animation-delay:0.480s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 60.4%);color:#1a1a1a">6</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">17 June 2026</span><span class="tk-weekday">Wednesday</span><span class="tk-toll" style="color:hsl(356, 75%, 60.4%)">6 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">N12 Etwatwa off-ramp, Benoni, Ekurhuleni</div>
+      <div class="tk-meta">Gauteng &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen fired on a car travelling with a Benoni Taxi Association patrol vehicle in the early hours; six died and one was wounded. Police suspect a taxi link.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.510s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">18 June 2026</span><span class="tk-weekday">Thursday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">Nita and Olga Streets, Lotus River, Grassy Park</div>
+      <div class="tk-meta">Western Cape &middot; Gang conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Men got out of a vehicle and fired on five men sitting outside a block of flats at about 22:30; four aged 32–44 died and one was seriously wounded. Police suspect a gang motive.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Gang conflict</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.540s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">19 June 2026</span><span class="tk-weekday">Friday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Toekomsrus Ext 4, Randfontein, West Rand</div>
+      <div class="tk-meta">Gauteng &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Five gunmen pulled up in a Kia Picanto, entered a house and killed Dewyn Dickinson, Ashley Von Meullen, Theo Pieterson and Claudio Davis. Nothing was taken.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.570s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">23 June 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Gandhi Zone, Ward 53, Ndwedwe, KwaZulu-Natal</div>
+      <div class="tk-meta">KwaZulu-Natal &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Slindile Ntshangase, Thandeka Ntshangase and Ncamsile Luthuli, all MK Party members, were shot dead at a home after returning from a party meeting.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+      <span class="tk-tag">Targeted, with bystanders</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.600s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">27 June 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Kanana informal settlement, Gugulethu</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Three armed men waited at a shack in NY 111 for the homeowner to return, then opened fire at about 19:00. Two women, 41 and 46, and a man, 21, died.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.630s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">29 June 2026</span><span class="tk-weekday">Monday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Solomon Mahlangu informal settlement, Walmer, Gqeberha</div>
+      <div class="tk-meta">Eastern Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Police found two men and two women shot dead at close range in a shack at about 00:20 on a Monday; one was a 15-year-old pupil. No arrests; motive unknown.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:0.660s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.660s">July<span class="tk-month-stats">7 attacks &middot; 27 killed &middot; 10 wounded</span></div>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.660s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">8 July 2026</span><span class="tk-weekday">Wednesday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed &middot; 3 wounded</span></span>
+      <div class="tk-location">Marcus Garvey, Philippi East, Cape Town</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen hit a house at about 20:30, twenty minutes after the Tafelsig shooting, wounding seven; four aged 17–20 died and three were taken to hospital. Police have not linked the two attacks.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.690s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">8 July 2026</span><span class="tk-weekday">Wednesday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed &middot; 2 wounded</span></span>
+      <div class="tk-location">Laura Street and 8th Avenue, Lost City, Tafelsig, Mitchells Plain</div>
+      <div class="tk-meta">Western Cape &middot; Gang conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Five men standing outside a tuck shop were shot at about 20:10; three, aged 18, 19 and 51, died and two were wounded. Police suspect a gang motive.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Gang conflict</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.720s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">14 July 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Lavender Street, Langrug, Franschhoek</div>
+      <div class="tk-meta">Western Cape &middot; Extortion</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen fired on a spaza shop at about 19:30; two men died in hospital that night and two more died of their wounds later. Police call it extortion-related; four suspects arrested.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Extortion</span>
+      <span class="tk-tag">Collective intimidation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.750s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">24 July 2026</span><span class="tk-weekday">Friday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Site B, Khayelitsha</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Two gunmen walked onto a property at about 20:30 and killed three men in their early thirties, then left in a white Hyundai. No arrests; motive unknown.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.780s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">25 July 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Zuurfontein and Orangerivier roads, Chloorkop, Kempton Park</div>
+      <div class="tk-meta">Gauteng &middot; Extortion</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Spaza shop brothers Ali and Tehreem Hasan and workers Imran Sajid and Zafar Iqbal were shot at a traffic light driving home. Extortion suspected, not confirmed.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Extortion</span>
+      <span class="tk-tag">Targeted, with bystanders</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.810s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">26 July 2026</span><span class="tk-weekday">Sunday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed &middot; 4 wounded</span></span>
+      <div class="tk-location">Seventh Avenue, Kayamandi, Stellenbosch</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Four men were shot dead and four people wounded, two of them police officers, on a Sunday. The gunmen exchanged fire with police before fleeing. Motive not established.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="5" style="--dot-color:hsl(356, 75%, 63.6%);animation-delay:0.840s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 63.6%);color:#1a1a1a">5</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">27 July 2026</span><span class="tk-weekday">Monday</span><span class="tk-toll" style="color:hsl(356, 75%, 63.6%)">5 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">NY 50, Gugulethu, Cape Town</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Two gunmen kicked in a door before dawn demanding a firearm and killed four men and a woman aged 19–23; a second woman survived. Police believe the attackers knew the household.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:0.870s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:0.870s">August<span class="tk-month-stats">8 attacks &middot; 32 killed &middot; 3 wounded</span></div>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.870s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">1 August 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Old Klipfontein Road, Nyanga</div>
+      <div class="tk-meta">Western Cape &middot; Taxi conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Four men were killed at about 21:55 as they changed a flat tyre on their Toyota Avanza. Police treat it as taxi violence.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Taxi conflict</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.900s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">3 August 2026</span><span class="tk-weekday">Monday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">Peace Village, KwaNobuhle, Kariega</div>
+      <div class="tk-meta">Eastern Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">The bodies of a 17-year-old and two men aged 20 and 22, all shot, were found in bushes. No arrests; motive unknown.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:0.930s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">7 August 2026</span><span class="tk-weekday">Friday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Erica and Buttercup streets, Reiger Park, Boksburg</div>
+      <div class="tk-meta">Gauteng &middot; Gang conflict</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Two women were shot on their way to a shop; Anti-Gang Unit constables Thapelo Tlometsane and Siphiwe Sibeko, responding, were ambushed and killed. Three men face four murder counts.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Gang conflict</span>
+      <span class="tk-tag">Targeted, with bystanders</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="5" style="--dot-color:hsl(356, 75%, 63.6%);animation-delay:0.960s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 63.6%);color:#1a1a1a">5</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">8 August 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 63.6%)">5 killed</span></span>
+      <div class="tk-location">Winnie Mandela Street, Phase 3, Langa, Cape Town</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Four men and a woman were found shot dead at a house when police responded at about 22:45 on a Saturday night. SAPS has not established a motive.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:0.990s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">8 August 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed</span></span>
+      <div class="tk-location">TR Section, Lingelethu West (Site C), Khayelitsha</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunfire at about 22:50 on a Saturday killed three men of 25, 31 and 35, the first of three mass shootings across the metro that night. Police offered a R100 000 reward on 21 August.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="3" style="--dot-color:hsl(356, 75%, 70.0%);animation-delay:1.020s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 70.0%);color:#1a1a1a">3</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">9 August 2026</span><span class="tk-weekday">Sunday</span><span class="tk-toll" style="color:hsl(356, 75%, 70.0%)">3 killed &middot; 2 wounded</span></span>
+      <div class="tk-location">Barcelona informal settlement, Gugulethu</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">A woman and two men died and two more people were wounded in a shooting before dawn on a Sunday. Motive not established.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:1.050s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">15 August 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed &middot; 1 wounded</span></span>
+      <div class="tk-location">Newclare, Johannesburg</div>
+      <div class="tk-meta">Gauteng &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Five young men aged 18–23 were shot inside a flat at about 21:30; three died at the scene and a fourth in hospital. Motive not established; no arrests.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="6" style="--dot-color:hsl(356, 75%, 60.4%);animation-delay:1.080s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 60.4%);color:#1a1a1a">6</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">29 August 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 60.4%)">6 killed</span></span>
+      <div class="tk-location">Mashobote mountain, Ngodwana, Mpumalanga</div>
+      <div class="tk-meta">Mpumalanga &middot; Illegal mining</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Six suspected illegal miners were found shot dead on a mountain after a resident alerted police at about 11:00. Police link it to rivalry between zama zama groups.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Illegal mining</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+</div>
+<div class="tk-month" style="animation-delay:1.110s">
+  <div class="tk-month-dot"></div>
+  <div class="tk-month-label" style="animation-delay:1.110s">September<span class="tk-month-stats">4 attacks &middot; 44 killed &middot; 28 wounded</span></div>
+<details class="tk-card" data-killed="12" style="--dot-color:hsl(356, 75%, 41.2%);animation-delay:1.110s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 41.2%);color:#ffffff">12</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">22 September 2026</span><span class="tk-weekday">Tuesday</span><span class="tk-toll" style="color:hsl(356, 75%, 41.2%)">12 killed &middot; 3 wounded</span></span>
+      <div class="tk-location">Iziko, KwaMakhutha, south of Durban</div>
+      <div class="tk-meta">KwaZulu-Natal &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen stormed a home at about 23:00 on a Tuesday and fired on a group inside. Ten died at the scene, among them a pregnant woman, and two later. Police do not rule out a feud between rival groups.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="18" style="--dot-color:hsl(356, 75%, 22.0%);animation-delay:1.140s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 22.0%);color:#ffffff">18</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">26 September 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 22.0%)">18 killed &middot; 14 wounded</span></span>
+      <div class="tk-location">Tavern, Wedela, near Carletonville</div>
+      <div class="tk-meta">Gauteng &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Eight gunmen with AK-47s opened fire on patrons at a tavern at about 21:30 on a Saturday, took their cellphones and torched two vehicles. Eighteen died, one of them later in hospital; 14 were seriously wounded.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="4" style="--dot-color:hsl(356, 75%, 66.8%);animation-delay:1.170s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 66.8%);color:#1a1a1a">4</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">26 September 2026</span><span class="tk-weekday">Saturday</span><span class="tk-toll" style="color:hsl(356, 75%, 66.8%)">4 killed</span></span>
+      <div class="tk-location">Mthuma Street, Site C, Khayelitsha</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Police found three men shot dead in and beside a parked car in Mthuma Street at about 19:15 on a Saturday; a fourth victim died in hospital. Police believe all four were in the car. Motive not established.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+    </div>
+  </div></div>
+</details>
+<details class="tk-card" data-killed="10" style="--dot-color:hsl(356, 75%, 47.6%);animation-delay:1.200s">
+  <summary class="tk-card-header">
+    <span class="tk-badge" style="background:hsl(356, 75%, 47.6%);color:#ffffff">10</span>
+    <span class="tk-card-info">
+      <span class="tk-card-row1"><span class="tk-date">27 September 2026</span><span class="tk-weekday">Sunday</span><span class="tk-toll" style="color:hsl(356, 75%, 47.6%)">10 killed &middot; 11 wounded</span></span>
+      <div class="tk-location">Lwandle, Strand, Cape Town</div>
+      <div class="tk-meta">Western Cape &middot; Not established</div>
+    </span>
+    <span class="tk-chevron">&#9660;</span>
+  </summary>
+  <div class="tk-body"><div class="tk-body-inner">
+    <p class="tk-summary">Gunmen entered an entertainment venue in the early hours of Sunday and fired on patrons. Five died at the scene and five in hospital; eleven were wounded. Motive unknown; no arrests.</p>
+    <div class="tk-tags">
+      <span class="tk-tag">Not established</span>
+      <span class="tk-tag">Indiscriminate retaliation</span>
+    </div>
+  </div></div>
+</details>
+</div>
+  </div>
+
+  <div class="tk-footer">
+    <p class="tk-definition">Definition: three or more people killed intentionally in one incident. Tolls are minimum figures as reported by police and the media at the time of the last check (28 September 2026). Tolls for recent incidents may rise. Colour intensity is based on the number killed: lighter red indicates fewer deaths, darker red indicates more.</p>
+    <p class="tk-credit">
+      <span class="tk-source">Compiled by the Global Initiative Against Transnational Organized Crime (GI-TOC)</span><br>
+      <span class="tk-graphic-credit">Graphic: Mihle Mdashe/News24</span>
+    </p>
+  </div>
+
+</div>
+
+<script>
+// Progress bar only — everything else is native HTML/CSS, no JS dependency
+try {
+  var pf = document.getElementById("tkProgressFill");
+  var tf = document.getElementById("tkTrackFill");
+  var tr = document.getElementById("tkTrack");
+  var tl = document.getElementById("tkTimeline");
+  function onScroll() {
+    var sy = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    var vh = window.innerHeight || document.documentElement.clientHeight || 800;
+    var t = 0, el = tl;
+    while (el) { t += el.offsetTop; el = el.offsetParent; }
+    var h = tl.offsetHeight;
+    pf.style.width = Math.max(0, Math.min(100, (sy / Math.max(1, h - vh * 0.5)) * 100)) + "%";
+    var tt = 0; el = tr;
+    while (el) { tt += el.offsetTop; el = el.offsetParent; }
+    tf.style.height = Math.max(0, Math.min(tr.offsetHeight, sy + vh * 0.5 - tt)) + "px";
+  }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+} catch(e) {}
+</script>
+</body>
+</html>
